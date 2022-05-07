@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import express, { json } from "express"
-import mongoose from "mongoose"
+// import mongoose from "mongoose"
 import cors from "cors"
 
 /**  Initializing or Starting Express Server */
@@ -9,8 +9,8 @@ const app = express()
 /**
  *  Make DB connection to Mongo DB
  */
-const db = mongoose.connect(process.env.DB_CONNECTION)
-db.then(() => console.log("DB connection success!"))
+// const db = mongoose.connect(process.env.DB_CONNECTION)
+// db.then(() => console.log("DB connection success!"))
 
 /**
  * CORS middleware
@@ -28,8 +28,11 @@ app.use(json())
  * Import Routes
  * add routes to app
  */
-import routes from './router/routes'
-app.use('/api', routes)
+// import routes from './router/routes'
+// app.use('/api', routes)
+app.get("/", (req, res) =>{
+    re.send("Welcome to topo-api")
+})
 
 
 /** Server Listening */ 
