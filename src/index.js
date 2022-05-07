@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import express, { json } from "express"
 // import mongoose from "mongoose"
 import cors from "cors"
@@ -16,6 +16,7 @@ const app = express()
  * CORS middleware
  * Enable body-parser 
  */
+dotenv.config()
 const corsOptions = {
     origin: '*',
     methods: "GET, POST, PUT, PATCH, DELETE",

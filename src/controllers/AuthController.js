@@ -44,20 +44,20 @@ class AuthController {
         response.send('send email')
     }
 
-    async passwordReset(request, response) {
-        const schema = Joi.object({
-            password: Joi.string().required().min(8),
-        })
-        const { error } = schema.validate(request.body)
-        if (error) return response.status(422).send(error.details[0].message)
+    // async passwordReset(request, response) {
+    //     const schema = Joi.object({
+    //         password: Joi.string().required().min(8),
+    //     })
+    //     const { error } = schema.validate(request.body)
+    //     if (error) return response.status(422).send(error.details[0].message)
 
-        // Generate a Hashed Password
-        const salt = await genSalt(10)
-        const hashedPassword = await hash(request.body.password, salt)
-        const data = [ hashedPassword, request.user.id ]
+    //     // Generate a Hashed Password
+    //     const salt = await genSalt(10)
+    //     const hashedPassword = await hash(request.body.password, salt)
+    //     const data = [ hashedPassword, request.user.id ]
 
-        response.send({ data })
-    }
+    //     response.send({ data })
+    // }
 }
 
 export default new AuthController
