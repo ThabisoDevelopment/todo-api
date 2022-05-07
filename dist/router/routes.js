@@ -15,7 +15,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // initiate express router
 var router = (0, _express.Router)(); // auth routes
 
-router.post('/oauth/test', _AuthController["default"].test);
+router.get('/oauth/test', _AuthController["default"].test);
 router.post('/oauth/login', _AuthController["default"].login); // router.post('/oauth/register', AuthController.create)
 // router.post('/oauth/forgot', AuthController.sendPasswordResetEmail)
 // router.put('/oauth/reset', Token.verifyPasswordReset, AuthController.passwordReset)
