@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "todo app made with express and mongo batabase",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "serve": "nodemon --exec babel-node src/index.js"
   },
