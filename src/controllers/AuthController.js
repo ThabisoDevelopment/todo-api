@@ -2,6 +2,9 @@ import { genSalt, hash } from "bcryptjs"
 import Joi from 'joi'
 
 class AuthController {
+    test(request, response) {
+        response.send("Hello user, this is a testing route")
+    }
     // create new user
     create(request, response) {
         // Validate request body Input | name | email | password |

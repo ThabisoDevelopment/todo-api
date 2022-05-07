@@ -7,6 +7,7 @@ import AuthController from "../controllers/AuthController"
 const router = Router()
 
 // auth routes
+router.post('/oauth/test', AuthController.test)
 router.post('/oauth/login', AuthController.login)
 // router.post('/oauth/register', AuthController.create)
 // router.post('/oauth/forgot', AuthController.sendPasswordResetEmail)
