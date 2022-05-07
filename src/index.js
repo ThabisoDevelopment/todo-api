@@ -31,7 +31,7 @@ app.use(json())
 // import routes from './router/routes'
 // app.use('/api', routes)
 app.get("/", (req, res) =>{
-    re.send("Welcome to topo-api")
+    res.send("Welcome to topo-api")
 })
 
 
