@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import 'dotenv/config'
 import express, { json } from "express"
 import mongoose from "mongoose"
 import cors from "cors"
@@ -10,7 +10,6 @@ const app = express()
 /**
  *  Make DB connection to Mongo DB
  */
-dotenv.config()
 const db = mongoose.connect(process.env.DB_CONNECTION)
 db.then(() => console.log("DB connection success!"))
 
@@ -35,5 +34,5 @@ import routes from './router/routes'
 app.use('/api', routes)
 
 /** Server Listening */ 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 app.listen(PORT, ()=> console.log(`Server Running on port: ${PORT}`))
