@@ -30,7 +30,7 @@ app.use(json())
  * Import Routes
  * add routes to app
  */
-import routes from './router/routes'
+import routes from './router/routes.mjs'
 app.use('/api', routes)
 
 /** Server Listening */ 

@@ -1,5 +1,5 @@
 import Joi from "joi"
-import TodoModel from "../models/TodoModel"
+import TodoModel from "../models/TodoModel.mjs"
 
 class TodoController {
 
@@ -8,6 +8,16 @@ class TodoController {
         try {
             const todos = await TodoModel.find({ user_id: request.user._id})
             response.send(todos)
+        } catch (error) {
+            response.status(400).send(error) 
+        }
+    }
+
+    // find todo by id
+    async findById(request, response) {
+        try {
+            const todo = await TodoModel.findById(request.params.id)
+            response.send(todo)
         } catch (error) {
             response.status(400).send(error) 
         }
@@ -67,7 +77,7 @@ class TodoController {
             const todo = await TodoModel.findById(request.params.id)
             todo.done = true
             await todo.save()
-            response.send(todo)
+            response.send({ message: 'Todo is now mark as done and updated successfuly'})
         } catch (error) {
             response.status(400).send(error) 
         }

@@ -1,6 +1,6 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose from 'mongoose'
 
-const todos = new Schema({
+const todos = mongoose.Schema({
     user_id: {
         type: mongoose.Types.ObjectId,
         ref: 'users'

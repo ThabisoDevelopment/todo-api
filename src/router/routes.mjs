@@ -1,9 +1,9 @@
 import { Router } from "express"
 
 // Import controllers
-import AuthController from "../controllers/AuthController"
-import TodoController from "../controllers/TodoController"
-import Token from "../middleware/Token"
+import AuthController from "../controllers/AuthController.mjs"
+import TodoController from "../controllers/TodoController.mjs"
+import Token from "../middleware/Token.mjs"
 
 // initiate express router
 const router = Router()
@@ -17,6 +17,7 @@ router.post('/oauth/verify', Token.verify, (request, response) => response.sendS
 
 //  todo routes
 router.get("/todos", Token.verify, TodoController.index)
+router.get("/todos/:id", Token.verify, TodoController.findById)
 router.post("/todos", Token.verify, TodoController.create)
 
 router.put("/todos/:id", Token.verify, TodoController.update)

@@ -2,12 +2,11 @@
   "name": "todo-api",
   "version": "0.0.1",
   "description": "todo app made with express and mongo batabase",
-  "main": "dist/index.js",
-  "type": "commonjs",
+  "main": "src/index.mjs",
+  "type": "module",
   "scripts": {
-    "start": "node dist/index.js",
-    "build": "babel src --out-dir dist",
-    "serve": "nodemon --exec babel-node src/index.js"
+    "start": "node src/index.mjs",
+    "serve": "nodemon src/index.mjs"
   },
   "keywords": [
     "todo",
@@ -28,12 +27,6 @@
     "nodemailer": "^6.7.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.17.9",
-    "@babel/node": "^7.14.5",
-    "@babel/plugin-transform-runtime": "^7.17.10",
-    "@babel/preset-env": "^7.14.5",
-    "babel-cli": "^6.26.0",
     "nodemon": "^2.0.15"
   },
   "engines": {

@@ -1,9 +1,11 @@
-import { genSalt, hash, compare } from "bcryptjs"
+import bcryptjs from "bcryptjs"
 import dayjs from "dayjs"
 import Joi from 'joi'
-import { sign } from "jsonwebtoken"
-import Mail from "../mail/Mail"
-import UserModel from "../models/UserModel"
+import jwt from "jsonwebtoken"
+import Mail from "../mail/Mail.mjs"
+import UserModel from "../models/UserModel.mjs"
+
+const { genSalt, hash, compare } = bcryptjs
 
 class AuthController {
     // create new user
@@ -39,8 +41,8 @@ class AuthController {
             }
             const mail_template = {
                 email: request.body.email,
-                subject: 'Welcome To anestordev TO-DO app',
-                text: "Welcome to anestordev to-do app where you can make your todo list of things"
+                subject: 'Hello! welcome to todo by anestordev',
+                message: 'TODO by anestordev is a platform for you, who wants to create a calmer, more organized and more productive list of todos'
             }
             await Mail(mail_template)
             response.status(201).send({
@@ -70,7 +72,7 @@ class AuthController {
             const valid_pass = await compare(request.body.password, user.password)
             if (!valid_pass) throw 'Sorry! your password is incorrent'
             // Create and Assign Token
-            const token = sign({ _id: user._id}, process.env.JWT_SECRET, { expiresIn: '1d'})
+            const token = jwt.sign({ _id: user._id}, process.env.JWT_SECRET, { expiresIn: '1d'})
             const data = {
                 _id: user._id,
                 name: user.name,
