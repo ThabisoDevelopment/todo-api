@@ -15,7 +15,8 @@ router.post('/oauth/forgot', AuthController.sendPasswordResetEmail)
 // email reset and email verify
 router.put('/oauth/reset', Token.verifyPasswordReset, AuthController.passwordReset)
 router.put('/oauth/verify/email', Token.verifyEmailToken, AuthController.verifyEmail)
-// update $$ verify user authentication
+// update, send verification and verify user authentication
+router.get('/oauth/verification', Token.verify, AuthController.sendVerificationEmail)
 router.put('/oauth/update', Token.verify, AuthController.update)
 router.post('/oauth/verify', Token.verify, (request, response) => response.sendStatus(200))
 

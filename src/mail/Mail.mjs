@@ -21,8 +21,7 @@ async function mail(mail_info) {
         to: mail_info.email, // list of receivers
         subject: mail_info.subject, // Subject line
         text: mail_info.message, // plain text body
-        html: `<h3>Hello, user welcome to TODO by anestordev</h3>
-                <p>${mail_info.message}</p>`, // html body
+        html: mail_info.message, // html body
     })
     console.log("Message sent: %s", info.messageId)
 }

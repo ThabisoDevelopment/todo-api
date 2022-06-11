@@ -40,7 +40,7 @@ class AuthController {
                 updatedAt: dayjs(user.createdAt).format('DD MMM YYYY')
             }
             // sign token and send welcome message with verification link
-            const token = sign({ _id: user._id}, process.env.JWT_VERIFY_EMAIL, { expiresIn: '30d'})
+            const token = jwt.sign({ _id: user._id}, process.env.JWT_VERIFY_EMAIL, { expiresIn: '30d'})
             const mail_template = {
                 email: request.body.email,
                 subject: 'Hello! welcome to todo by anestordev',
@@ -126,7 +126,7 @@ class AuthController {
             const exists = await UserModel.exists({ email: request.body.email })
             if (!exists) throw 'Sorry! this user does not exist try signup instead'
             const user = await UserModel.findOne({ email: request.body.email })
-            const token = sign({ _id: user._id}, process.env.JWT_PASSWORD_RESET, { expiresIn: '1d'})
+            const token = jwt.sign({ _id: user._id}, process.env.JWT_PASSWORD_RESET, { expiresIn: '1d'})
             const mail_template = {
                 email: request.body.email,
                 subject: 'Reset Your Password',
@@ -154,6 +154,23 @@ class AuthController {
             user.password = hashed_password
             await user.save()
             response.send({ message: 'Your password has been updated success'})
+        } catch (error) {
+            response.status(400).send(error)
+        }
+    }
+
+    // sign token and send verification link
+    async sendVerificationEmail(request, response) {
+        try {
+            const user = await UserModel.findById(request.user._id)
+            const token = jwt.sign({ _id: user._id}, process.env.JWT_VERIFY_EMAIL, { expiresIn: '30d'})
+            const mail_template = {
+                email: user.email,
+                subject: 'email verification',
+                message: `Click the link to confirm email: http://localhost:3000/oauth/verify/email?token=${token}`
+            }
+            await Mail(mail_template)
+            response.send({ message: 'Your email verification have been sent to your email successfuly' })
         } catch (error) {
             response.status(400).send(error)
         }
