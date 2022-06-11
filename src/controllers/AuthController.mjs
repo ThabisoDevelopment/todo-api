@@ -39,16 +39,43 @@ class AuthController {
                 createdAt: dayjs(user.createdAt).format('DD MMM YYYY'),
                 updatedAt: dayjs(user.createdAt).format('DD MMM YYYY')
             }
+            // sign token and send welcome message with verification link
+            const token = sign({ _id: user._id}, process.env.JWT_VERIFY_EMAIL, { expiresIn: '30d'})
             const mail_template = {
                 email: request.body.email,
                 subject: 'Hello! welcome to todo by anestordev',
-                message: 'TODO by anestordev is a platform for you, who wants to create a calmer, more organized and more productive list of todos'
+                message: `TODO by anestordev is a platform for you, who wants to create a calmer,
+                            more organized and more productive list of todos.
+                            Click the link to confirm email: http://localhost:3000/oauth/verify/email?token=${token}`
             }
             await Mail(mail_template)
             response.status(201).send({
                 message: "Your account has been created successful",
                 ...data
             })
+        } catch (error) {
+            response.status(400).send(error)
+        }
+    }
+
+    // update cureent user user
+    async update(request, response) {
+        try {
+            // Validate request body Input | name | password |
+            const schema = Joi.object({
+                name: Joi.string().required().min(3).max(50),
+                password: Joi.string().required().min(8),
+            })
+            const { error } = schema.validate(request.body)
+            if (error) throw error.details[0].message
+            // Generate a Hashed Password
+            const salt = await genSalt(10)
+            const hashed_password = await hash(request.body.password, salt)
+            const user = await UserModel.findById(request.user._id)
+            user.name = request.body.name
+            user.password = hashed_password
+            await user.save()
+            response.send({ message: 'Your account details have been updated successly'})
         } catch (error) {
             response.status(400).send(error)
         }
@@ -103,13 +130,10 @@ class AuthController {
             const mail_template = {
                 email: request.body.email,
                 subject: 'Reset Your Password',
-                text: `Click the link to reset passwod: http://localhost:8000/oauth/reset?token=${token}`
+                message: `Click the link to reset passwod: http://localhost:3000/oauth/reset?token=${token}`
             }
             await Mail(mail_template)
-            response.send({
-                message: "Password reset link has been sent to your email - check your inbox",
-                mail_template
-            })
+            response.send({ message: "Password reset link has been sent to your email - check your inbox" })
         } catch (error) {
             response.status(400).send(error)
         }
@@ -130,6 +154,18 @@ class AuthController {
             user.password = hashed_password
             await user.save()
             response.send({ message: 'Your password has been updated success'})
+        } catch (error) {
+            response.status(400).send(error)
+        }
+    }
+
+    // verify email address
+    async verifyEmail(request, response) {
+        try {
+            const user = await UserModel.findById(request.user._id)
+            user.email_verified = true
+            await user.save()
+            response.send({ message: 'Your email address has been verified successfuly'})
         } catch (error) {
             response.status(400).send(error)
         }

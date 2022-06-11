@@ -12,7 +12,11 @@ const router = Router()
 router.post('/oauth/login', AuthController.login)
 router.post('/oauth/register', AuthController.create)
 router.post('/oauth/forgot', AuthController.sendPasswordResetEmail)
+// email reset and email verify
 router.put('/oauth/reset', Token.verifyPasswordReset, AuthController.passwordReset)
+router.put('/oauth/verify/email', Token.verifyEmailToken, AuthController.verifyEmail)
+// update $$ verify user authentication
+router.put('/oauth/update', Token.verify, AuthController.update)
 router.post('/oauth/verify', Token.verify, (request, response) => response.sendStatus(200))
 
 //  todo routes
@@ -22,9 +26,8 @@ router.post("/todos", Token.verify, TodoController.create)
 
 router.put("/todos/:id", Token.verify, TodoController.update)
 router.put("/todos/done/:id", Token.verify, TodoController.done)
-router.put("/todos/list/:id", Token.verify, TodoController.addListItem)
-
-router.delete("/todos/list/:id", Token.verify, TodoController.removeListItem)
+router.put("/todos/list/:id", Token.verify, TodoController.addListItem) /** not in use */
+router.delete("/todos/list/:id", Token.verify, TodoController.removeListItem) /** not in use */
 router.delete("/todos/:id", Token.verify, TodoController.destroy)
 
 export default router

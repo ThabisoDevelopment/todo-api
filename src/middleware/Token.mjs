@@ -26,6 +26,19 @@ class Token {
             return response.status(403).send(error.message)
         }
     }
+
+    // verify email by clicking the link on email inbox
+    verifyEmailToken(request, response, next) {
+        const token = request.header('authorization') || null
+        if(!token) return response.status(401).send("Access Denied")
+        try {
+            const verified = jwt.verify(token, process.env.JWT_VERIFY_EMAIL) /** JWT_PASSWORD_RESET */
+            request.user = verified
+            next()
+        } catch (error) {
+            return response.status(403).send(error.message)
+        }
+    }
 }
 
 export default new Token
