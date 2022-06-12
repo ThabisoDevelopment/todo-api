@@ -15,10 +15,14 @@ router.post('/oauth/forgot', AuthController.sendPasswordResetEmail)
 // email reset and email verify
 router.put('/oauth/reset', Token.verifyPasswordReset, AuthController.passwordReset)
 router.put('/oauth/verify/email', Token.verifyEmailToken, AuthController.verifyEmail)
-// update, send verification and verify user authentication
-router.get('/oauth/verification', Token.verify, AuthController.sendVerificationEmail)
+// get, update, send verification and verify user authentication
+router.get('/oauth/user', Token.verify, AuthController.currentUser)
 router.put('/oauth/update', Token.verify, AuthController.update)
+router.post('/oauth/verification', Token.verify, AuthController.sendVerificationEmail)
 router.post('/oauth/verify', Token.verify, (request, response) => response.sendStatus(200))
+// delete user
+router.delete('/oauth/destroy', Token.verify, AuthController.destroy)
+
 
 //  todo routes
 router.get("/todos", Token.verify, TodoController.index)

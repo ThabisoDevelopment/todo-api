@@ -3,6 +3,7 @@ import dayjs from "dayjs"
 import Joi from 'joi'
 import jwt from "jsonwebtoken"
 import Mail from "../mail/Mail.mjs"
+import TodoModel from "../models/TodoModel.mjs"
 import UserModel from "../models/UserModel.mjs"
 
 const { genSalt, hash, compare } = bcryptjs
@@ -183,6 +184,36 @@ class AuthController {
             user.email_verified = true
             await user.save()
             response.send({ message: 'Your email address has been verified successfuly'})
+        } catch (error) {
+            response.status(400).send(error)
+        }
+    }
+
+    // retrieve cureent user
+    async currentUser(request, response) {
+        try {
+            const user = await UserModel.findById(request.user._id)
+            const data = {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                email_verified: user.email_verified,
+                createdAt: dayjs(user.createdAt).format('DD-MMM-YYYY HH:MM'),
+                updatedAt: dayjs(user.createdAt).format('DD-MMM-YYYY HH:MM')
+            }
+            response.send(data)
+        } catch (error) {
+            response.status(400).send(error)
+        }
+    }
+
+    // destroy user with all of its data
+    async destroy(request, response) {
+        try {
+            const todos = await TodoModel.deleteMany({ user_id: request.user._id })
+            const user = await UserModel.findById(request.user._id)
+            await user.delete()
+            response.send({ message: 'Your account is now deleted with all of its data successful' })
         } catch (error) {
             response.status(400).send(error)
         }
